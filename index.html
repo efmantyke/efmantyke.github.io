@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo dos 151 Pokémons</title>
+    <style>
+        /* Configura o grid de Pokémons */
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(15, 60px); /* 15 colunas */
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Estilo para cada imagem de Pokémon */
+        .pokemon {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Estilo do efeito quando a imagem for clicada */
+        .pokemon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.6); /* Transparência para X vermelho */
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+        }
+
+        .pokemon.correct::after {
+            content: '✓'; /* Círculo verde para o Pokémon correto */
+            background-color: rgba(0, 255, 0, 0.6);
+            display: flex;
+        }
+
+        .pokemon.wrong::after {
+            content: 'X'; /* X vermelho para os Pokémons incorretos */
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+<h1>Encontre o Pokémon Secreto!</h1>
+<div class="pokemon-grid" id="pokemonGrid"></div>
+</div>
+
+
+
+<script>
+    // JavaScript para gerar a grid de Pokémons e definir o Pokémon correto
+    const pokemonGrid = document.getElementById('pokemonGrid');
+    const totalPokemons = 151;
+
+    // Escolhe aleatoriamente um Pokémon que será o correto
+    const correctPokemon = 48;
+
+    // Função para criar cada Pokémon na grid
+    function createPokemon(id) {
+        const pokemon = document.createElement('div');
+        pokemon.classList.add('pokemon');
+        pokemon.dataset.id = id;
+
+        // Define a imagem de fundo usando o número do Pokémon
+        pokemon.style.backgroundImage = `url('imagens/${id + 1}.png')`; // Adapta o caminho conforme o nome do arquivo e o local da pasta de imagens
+        pokemon.style.backgroundSize = 'cover'; // Ajusta para que a imagem cubra o espaço do div
+
+        // Adiciona evento de clique
+        pokemon.addEventListener('click', () => {
+            if (parseInt(pokemon.dataset.id) === correctPokemon) {
+                pokemon.classList.add('correct');
+                alert('Parabéns! Você encontrou o Pokémon secreto!');
+            } else {
+                pokemon.classList.add('wrong');
+            }
+        });
+
+        pokemonGrid.appendChild(pokemon);
+    }
+
+    // Cria todos os 151 Pokémons no grid
+    for (let i = 0; i < totalPokemons; i++) {
+        createPokemon(i);
+    }
+</script>
+
+</body>
+</html>
